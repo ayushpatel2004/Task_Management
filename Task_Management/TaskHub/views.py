@@ -20,6 +20,10 @@ def signUpPage(request):
     template=loader.get_template('signup.html')
     return HttpResponse(template.render({},request))
 
+def home(request):
+    template=loader.get_template('home.html')
+    return HttpResponse(template.render({},request))
+
 def clientLoggedIn(request):
     client_username=request.POST['username']
     client_password=request.POST['password']
