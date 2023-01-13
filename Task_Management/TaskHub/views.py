@@ -74,3 +74,27 @@ def clientRegistered(request):
     user.save()
     return redirect('home')
 
+
+username=""
+groupname=""
+
+def AddGroup(request):
+    template=loader.get_template('groupdetails.html')
+    return HttpResponse(template.render({},request))
+
+def GroupDetails(request):
+    template1=loader.get_template('groupdetails.html')
+    template2=loader.get_template('groupname.html')
+    groupname=request.POST['groupname']
+    if request.method=='POST' and 'add' in request.POST:
+       membername=request.POST['membername']
+       member=User.objects.get(username=membername)
+       Groups.User.add(member)
+       return HttpResponse(template1.render({},request))   
+
+def GroupAdded(request):
+    template=loader.get_template('groupmainpage.html')
+    
+    groupd=request.POST['groupd']
+    members=request.POST['members']
+    
