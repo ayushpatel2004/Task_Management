@@ -24,29 +24,31 @@
 	<div class="right" id="login">
 		<h5>Signup</h5>
 		<p>Signup for free and enjoy using our TaskHub.</p>
+		<form class="InputContainer" action ="../clientRegistered/" method="post">
 		<div class="inputs">
-			<input type="text" placeholder="First name" id="firstname">
+			{% csrf_token %}
+			<input type="text" placeholder="First name" name="firstname">
 			<br>
-            <input type="text" placeholder="Last name" id="lastname">
+            <input type="text" placeholder="Last name" name="lastname">
 			<br>
-            <input type="text" placeholder="Username" id="username">
+            <input type="text" placeholder="Username" name="username">
 			<br>
-            <input type="email" placeholder="Email" id="email">
+            <input type="email" placeholder="Email" name="email">
 			<br>
-            <input type="number" placeholder="Mobile Number" id="number">
+            <input type="number" placeholder="Mobile Number" name="contact">
             <br>
-            <input type="password" placeholder="Password" id="password">
+            <input type="password" placeholder="Password" name="password">
 			<br>
-            <input type="password" placeholder="Confirm Password" id="cpassword">
+            <input type="password" placeholder="Confirm Password" name="cpassword">
 			<br>
 		</div>
 			<br><br>
 		<div class="remember-me--forget-password">
 				
-			<a href="/home"><button>Signup</button></a>
+			<a type="submit"><button>Signup</button></a>
             
 	</div>
-	
+</form>
 </div>
 <!-- partial -->
   

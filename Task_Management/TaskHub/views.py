@@ -37,21 +37,15 @@ def clientLoggedIn(request):
         return render(request,'message.html',context)
 
     saved_hashed_password = clients[0]['password']
-    saved_role=clients[0]['role']
+    # saved_role=clients[0]['role']
     
-    if(saved_role!=0):
-        message="NOT A VALID CLIENT"
-        context={
-            "message":message
-        }
-        return render(request,'message.html',context)
     if(check_password(client_password,saved_hashed_password)!=True):
         message="WRONG PASSWORD"
         context={
             "message":message
         }
         return render(request,'message.html',context)
-    template=loader.get_template('chome.html')
+    template=loader.get_template('home.html')
     context={
         'client':clients[0]
         # more to be added
@@ -67,7 +61,7 @@ def clientRegistered(request):
     client_contact = request.POST['contact']
     hashed_client_password=make_password(client_password)
     client_email=request.POST['email']
-    client_confirm_password=request.POST['confirm_password']
+    client_confirm_password=request.POST['cpassword']
 
     for x in User.objects.all().values():
         if(x['username']==client_username):
