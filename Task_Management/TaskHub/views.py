@@ -27,6 +27,7 @@ def home(request):
 def clientLoggedIn(request):
     client_username=request.POST['username']
     client_password=request.POST['password']
+    # print(request.POST['password'])
     clients=User.objects.filter(username=client_username).values()
     if(len(clients)==0):
         message="USERNAME DOES NOT EXIST"

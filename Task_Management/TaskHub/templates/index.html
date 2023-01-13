@@ -28,17 +28,19 @@
         
 		<h5>Login</h5>
 		<p>Don't have an account? <a href="signup" role="tab" data-toggle="tab">Create Your Account</a></p>
-		<form class="inputs" method="post">
-			<input type="text" placeholder="Username" id="username" method="POST">
+		<form class="inputs" method="post" action="../clientLoggedIn/">
+			{% csrf_token %}
+			<input type="text" placeholder="Username" id="username" name="username" method="POST">
 			<br>
-			<input type="password" placeholder="Password" id="password">
-		</form>
+			<input type="password" placeholder="Password" id="password" name="password" method="POST">
+		
 			<br><br>
 		<div class="remember-me--forget-password">
 				
-			<button>Login</button>
-            
-	</div>
+			<button type="submit">Login</button>
+		</div>
+		</form>
+	
 	
 </div>
 <!-- partial -->
