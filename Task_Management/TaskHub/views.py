@@ -12,6 +12,14 @@ from django.contrib.auth.hashers import make_password, check_password
 # check_password("plain_text",hashed_pwd)
 
 
+def signInPage(request):
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render({},request))
+
+def signUpPage(request):
+    template=loader.get_template('signup.html')
+    return HttpResponse(template.render({},request))
+
 def clientLoggedIn(request):
     
     client_username=request.POST['username']
@@ -25,14 +33,7 @@ def clientLoggedIn(request):
         return render(request,'message.html',context)
 
     saved_hashed_password = clients[0]['password']
-    saved_role=clients[0]['role']
     
-    if(saved_role!=0):
-        message="NOT A VALID CLIENT"
-        context={
-            "message":message
-        }
-        return render(request,'message.html',context)
     if(check_password(client_password,saved_hashed_password)!=True):
         message="WRONG PASSWORD"
         context={
