@@ -21,7 +21,6 @@ def signUpPage(request):
     return HttpResponse(template.render({},request))
 
 def clientLoggedIn(request):
-    
     client_username=request.POST['username']
     client_password=request.POST['password']
     clients=User.objects.filter(username=client_username).values()
@@ -33,7 +32,14 @@ def clientLoggedIn(request):
         return render(request,'message.html',context)
 
     saved_hashed_password = clients[0]['password']
+    saved_role=clients[0]['role']
     
+    if(saved_role!=0):
+        message="NOT A VALID CLIENT"
+        context={
+            "message":message
+        }
+        return render(request,'message.html',context)
     if(check_password(client_password,saved_hashed_password)!=True):
         message="WRONG PASSWORD"
         context={
@@ -46,6 +52,7 @@ def clientLoggedIn(request):
         # more to be added
     }
     return HttpResponse(template.render(context,request))
+
 
 def clientRegistered(request):
     client_username=request.POST['username']
@@ -75,27 +82,53 @@ def clientRegistered(request):
     user.save()
     return redirect('home')
 
-
-username=""
-groupname=""
-
 def AddGroup(request):
+    username=request.POST['username']
+    clients=User.objects.filter(username=username).values()
     template=loader.get_template('groupdetails.html')
-    return HttpResponse(template.render({},request))
+    context={
+        'client':clients[0]
+        # more to be added
+    }
+    return HttpResponse(template.render(context,request))
 
 def GroupDetails(request):
+    username=request.POST['username']
     template1=loader.get_template('groupdetails.html')
-    template2=loader.get_template('groupname.html')
-    groupname=request.POST['groupname']
+    template2=loader.get_template('groupmainpage.html')
+    clients=User.objects.filter(username=username).values()
+    if request.method=='POST' and 'add_group' in request.POST:
+       groupname=request.POST['groupname']
+       groupdescription=request.POST['groupd']
+       group=Groups(groupname=groupname,owner=username,groupdescription=groupdescription )
+       group.save()
     if request.method=='POST' and 'add' in request.POST:
+       groupname=request.POST['groupname']
        membername=request.POST['membername']
        member=User.objects.get(username=membername)
-       Groups.User.add(member)
-       return HttpResponse(template1.render({},request))   
+       group=Groups.objects.get(groupname=groupname)
+       if(len(member)==0):
+        message="USERNAME DOES NOT EXIST"
+        context={
+            "message":message
+        }
+        return render(request,'message.html',context)
+       group[0].User.add(member[0])
+       return HttpResponse(template1.render({},request))
+    if request.method=='POST' and 'continue' in request.POST:   
+       groupname=request.POST['groupname']
+       group=Groups.objects.get(groupname=groupname)
+       context={
+          'group': group[0],'client':clients[0]
+       }
+       return HttpResponse(template2.render(context,request))
 
-def GroupAdded(request):
-    template=loader.get_template('groupmainpage.html')
+
+
+
+
+
+
+
     
-    groupd=request.POST['groupd']
-    members=request.POST['members']
     
