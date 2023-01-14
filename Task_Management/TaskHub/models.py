@@ -12,8 +12,8 @@ class User(models.Model):
 class Groups(models.Model):
     groupname=models.CharField(max_length=300)
     owner=models.CharField(max_length=300)
-    groupdescrition=models.CharField(max_length=300)
-    members=models.ManyToManyField(User)
+    groupdescription=models.CharField(max_length=300)
+    members=models.ManyToManyField(User,related_name='groups')
 
 
 class Tasks(models.Model):
