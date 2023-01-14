@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,5 +17,66 @@
         <br>
         <button id="add_group" name="add_group" type="submit">Create</button>
     </form>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page in HTML with CSS Code Example</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"><link rel="stylesheet" href="{% static 'groupdetails.css' %}">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="header">
+    <img src="https://cdn.jim-nielsen.com/ios/512/task-2013-06-27.png" class="logo">
+    <a href="" class="heading">TaskHub</a>
+    <nav>
+        <!-- <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Products</a></li>
+            <li><a href="">Community</a></li>
+            <li><a href="">Contact</a></li>
+        </ul> -->
+    </nav>
+    <a href="../login"><button class="btn" id="btn1">Profile</button></a>
+    <a href="../signup"><button class="btn" id="btn2">Logout</button></a>
+    </div>
+<div class="box-form">
+	<div class="left">
+		<div class="overlay">
+		<h1>TaskHub</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+		Curabitur et est sed felis aliquet sollicitudin</p>
+		</div>
+	</div>
+	
+	<div class="right" id="login">
+		<h1>Create Group</h1>
+		<p>Enter group name and it's description.</p>
+		<form class="InputContainer" action ="../GroupDetails/" method="post">
+			{% csrf_token %}
+		<div class="inputs">
+			<input type="text" placeholder="Group name" name="groupname">
+			<br>
+            <input type="text" placeholder="Group Description" name="groupd">
+			<br>
+            <button id="add_group" name="add_group" type="submit" style="margin-top: 20px;">Create</button>
+		</div>
+			<!-- <br><br>
+		<div class="remember-me--forget-password">
+				
+			<a type="submit"><button>Signup</button></a>
+            
+	</div> -->
+</form>
+</div>
+<!-- partial -->
+  
 </body>
 </html>
