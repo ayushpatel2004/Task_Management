@@ -24,14 +24,19 @@ def signUpPage(request):
     template=loader.get_template('signup.html')
     return HttpResponse(template.render({},request))
 
-# def home(request):
-#     template=loader.get_template('home.html')
-#     clients=User.objects.filter(username=client_username).values()
-#     context={
-#         'user':clients[0]
-#         # more to be added
-#     }
-#     return HttpResponse(template.render(context,request))
+def home(request):
+    template=loader.get_template('home.html')
+    print(" ################################## home ##################################")
+    client_username = request.session['username']
+    print("Response : ", client_username)
+    clients=User.objects.filter(username=client_username)
+    groups=clients[0].groups.all()
+    context={
+        'user':clients[0],
+        'groups':groups
+        # more to be added
+    }
+    return HttpResponse(template.render(context,request))
 
 def clientLoggedIn(request):
     client_username=request.POST['username']
@@ -55,11 +60,16 @@ def clientLoggedIn(request):
         }
         return render(request,'message.html',context)
     template=loader.get_template('home.html')
-    context={
-        'user':clients[0]
-        # more to be added
-    }
-    return HttpResponse(template.render(context,request))
+    # groups=user[0].groups.all()
+    # context={
+    #     'user':clients[0]
+    #     'groups':groups
+    #     # more to be added
+    # }
+    print(" ################################## client Log In ##################################")
+    request.session['username'] = client_username
+    print("Session username 1 : ", request.session.get('username'))
+    return redirect('../home/')
 
 
 def clientRegistered(request):
@@ -91,7 +101,7 @@ def clientRegistered(request):
     context={
         'username':client_username
     }
-    return HttpResponse(template.render(context,request))
+    return HttpResponseRedirect(template.render(context,request))
 
 def AddGroup(request):
     print(request.POST['username'])
@@ -107,7 +117,7 @@ def AddGroup(request):
 def GroupDetails(request):
     username=request.POST['username']
     template1=loader.get_template('userdetailsadd.html')
-    users=User.objects.filter(username=username).values()
+    users=User.objects.filter(username=username)
     groupname=request.POST['groupname']
     groupdescription=request.POST['groupd']
     group=Groups(groupname=groupname,owner=username,groupdescription=groupdescription)

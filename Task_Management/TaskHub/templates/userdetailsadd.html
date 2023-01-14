@@ -11,7 +11,7 @@
     <form action="../UserAdd/" method="POST">
         {%csrf_token%}
         <input type="text" name="username" value= '{{ username }}' style="display:none;">
-        <input type="number" name="groupid" value= '{{ groupid}}' style="display:none;">
+        <input type="number" name="groupid" value= '{{ groupid.id}}' style="display:none;">
 
         <input type="text" placeholder="Add username" name="membername">
         <br>
