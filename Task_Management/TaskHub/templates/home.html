@@ -13,49 +13,6 @@
     <form action="../AddGroup/" method="POST">
         {%csrf_token%}
         <input type="text" name="username" value= '{{ username }}' style="display:none;">
-    <div>
-        {% for x in groups %}
-        <div class="card 1">
-            <div class="card_image"> <img src="https://i.redd.it/b3esnz5ra34y.jpg" /> 
-            </div>
-            <div class="card_title title-white">
-              <p>{{x.groupname}}</p>
-            </div>
-            <div class="row-text">
-                <p>{{x.groupdescription}}</p>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <div class = "row" >12</div>
-                    <div class ="row">Tasks</div>
-                </div>
-                <div class="column">
-                    <div class = "row">2</div>
-                    <div class ="row" >Pending</div>
-                </div>
-                <div class="column2">
-                    
-                    <div class=" circle-wrap">
-                        <div class="circle">
-                          
-                            <div class="mask full">
-                              <div class="fill"></div>
-                            </div>
-                           
-                            <div class="mask half">
-                              <div class="fill"></div>
-                            </div>
-                            
-                            <div class="inside-circle">
-                                83%
-                            </div>
-                    </div>
-                         
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
         <button type="submit">
             add group
         </button>
