@@ -9,55 +9,79 @@
     <title>TaskHub</title>
 </head>
 <body>
-    {{user.username}}
+    <div class="header">
+        <img src="https://cdn.jim-nielsen.com/ios/512/task-2013-06-27.png" class="logo">
+        <a href="" class="heading">TaskHub</a>
+        <nav>
+            <!-- <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="">Products</a></li>
+                <li><a href="">Community</a></li>
+                <li><a href="">Contact</a></li>
+            </ul> -->
+        </nav>
+        <a href="../login"><button class="btn" id="btn1">Profile</button></a>
+        <a href="../signup"><button class="btn" id="btn2">Logout</button></a>
+    </div>
     <form action="../AddGroup/" method="POST">
         {%csrf_token%}
         <input type="text" name="username" value= '{{ user.username }}' style="display:none;">
-    <div>
-        {% for x in groups %}
-        <div class="card 1">
-            <div class="card_image"> <img src="https://i.redd.it/b3esnz5ra34y.jpg" /> 
-            </div>
-            <div class="card_title title-white">
-              <p>{{x.groupname}}</p>
-            </div>
-            <div class="row-text">
-                <p>{{x.groupdescription}}</p>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <div class = "row" >12</div>
-                    <div class ="row">Tasks</div>
-                </div>
-                <div class="column">
-                    <div class = "row">2</div>
-                    <div class ="row" >Pending</div>
-                </div>
-                <div class="column2">
-                    
-                    <div class=" circle-wrap">
-                        <div class="circle">
-                          
-                            <div class="mask full">
-                              <div class="fill"></div>
+        <div class="container">
+            <div class="row1">
+                <div class="col-sm-3">
+                    {% for x in groups %}
+                    <div class="card 1">
+                        <div class="card_image"> 
+                            <img src="https://i.redd.it/b3esnz5ra34y.jpg"> 
+                        </div>
+                        <div class="card_title title-white">
+                            <p>{{x.groupname}}</p>
+                        </div>
+                        <div class="row-text">
+                            <p>{{x.groupdescription}}</p>
+                        </div>
+                        <div class="row">
+                            <div class="column">
+                                <div class = "row" >12</div>
+                                <div class ="row">Tasks</div>
                             </div>
-                           
-                            <div class="mask half">
-                              <div class="fill"></div>
+                            <div class="column">
+                                <div class = "row">2</div>
+                                <div class ="row" >Pending</div>
                             </div>
-                            
-                            <div class="inside-circle">
-                                83%
+                            <div class="column2">
+                                <div class=" circle-wrap">
+                                    <div class="circle">
+                                        <div class="mask full">
+                                            <div class="fill">
+
+                                            </div>
+                                        </div>
+                                        <div class="mask half">
+                                            <div class="fill">
+
+                                            </div>
+                                        </div>
+                                        <div class="inside-circle">
+                                            83%
+                                        </div>
+                                    </div>         
+                                </div>
                             </div>
+                        </div>
                     </div>
-                         
+                    {% if forloop.counter|divisibleby:4 %}
+                </div>   
+            </div>
+            <div class="row1">
+                <div class="col-sm-3">
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
         <button type="submit">
-            add group
+            Add Group
         </button>
     </form>
 </body>
