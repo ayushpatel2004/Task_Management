@@ -108,13 +108,13 @@ def GroupDetails(request):
     group=Groups(groupname=groupname,owner=username,groupdescription=groupdescription)
     group.save()
     group.members.add(users[0])
+    member=group.members.values().all()
     group.save()
     request.session['groupid'] = group.id
     # print(request.session['groupid'])
-    # context={
-    #     'username':username,
-    #     'groupid':group.id
-    # }
+    context={
+        'members': member
+    }
     return HttpResponse(template1.render({},request))
 
 
