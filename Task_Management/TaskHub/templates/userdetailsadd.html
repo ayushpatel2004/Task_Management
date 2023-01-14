@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,5 +18,71 @@
         <button id="add" name="add" type="submit">Add User</button>
         <button id="continue" name="continue" type="submit">Continue</button>
     </form>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page in HTML with CSS Code Example</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"><link rel="stylesheet" href="{% static 'groupdetails.css' %}">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="header">
+    <img src="https://cdn.jim-nielsen.com/ios/512/task-2013-06-27.png" class="logo">
+    <a href="" class="heading">TaskHub</a>
+    <nav>
+        <!-- <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Products</a></li>
+            <li><a href="">Community</a></li>
+            <li><a href="">Contact</a></li>
+        </ul> -->
+    </nav>
+    <a href="../login"><button class="btn" id="btn1">Profile</button></a>
+    <a href="../signup"><button class="btn" id="btn2">Logout</button></a>
+    </div>
+<div class="box-form">
+	<div class="left">
+		<div class="overlay">
+		<h1>TaskHub</h1>
+		<p>Is it difficult to keep a track of the progress of your team members in a group project? Well, not anymore.</p>
+        <p>Leave it to us. Collaborate and build :)</p>
+        <h1>Your teammates</h1>
+        {% for x in members %}
+        <p>{{x.username}}</p>
+        {% endfor %}
+		</div>
+	</div>
+	
+	<div class="right" id="login">
+		<h1>Add user</h1>
+		<p>Add your teammates by their username.</p>
+		<form class="InputContainer" action ="../UserAdd/" method="post">
+			{% csrf_token %}
+		<div class="inputs">
+            <input type="number" name="groupid" value= '{{ groupid}}' style="display:none;">
+            <input type="text" name="username" value= '{{ username }}' style="display:none;">
+			<input type="text" placeholder="Add user" name="membername">
+			<br>
+            <button id="add" name="add" type="submit" style="margin: 20px; display:inline-block;">Add User</button>
+            <button id="continue" name="continue" type="submit" style="margin: 20px; display:inline-block;">Finish</button>
+		</div>
+			<!-- <br><br>
+		<div class="remember-me--forget-password">
+				
+			<a type="submit"><button>Signup</button></a>
+            
+	</div> -->
+</form>
+</div>
+<!-- partial -->
+  
 </body>
 </html>
