@@ -110,6 +110,7 @@ def GroupDetails(request):
     group.members.add(users[0])
     group.save()
     request.session['groupid'] = group.id
+    print(request.session['groupid'])
     # context={
     #     'username':username,
     #     'groupid':group.id
@@ -118,10 +119,9 @@ def GroupDetails(request):
 
 
 def UserAdd(request):
-    username=request.session['username']
     groupid=request.session['groupid']
     template1=loader.get_template('userdetailsadd.html')
-    template2=loader.get_template('groupmainpage.html')
+    template2=loader.get_template('groupinfo.html')
     print(groupid)
     if request.method=='POST' and 'add' in request.POST:
        membername=request.POST['membername']
@@ -146,7 +146,7 @@ def UserAdd(request):
     #    context={
     #       'groupid': groupid,'username':username
     #    }
-       return HttpResponse(template2.render({},request))
+       return redirect('../GroupDisplay')
 
 
 def TaskAdd(request):
@@ -160,7 +160,7 @@ def TaskAdded(request):
     username = request.session['username']
     groupid=request.session['groupid']
     template1=loader.get_template('taskadd.html')
-    template2=loader.get_template('groupmainpage.html')
+    # template2=loader.get_template('groupmainpage.html')
     if request.method=='POST' and 'add' in request.POST:
        taskname=request.POST['taskname']
        taskdescription=request.POST['taskdescription']
@@ -176,14 +176,16 @@ def TaskAdded(request):
        group.save()
        return HttpResponse(template1.render({},request))
     if request.method=='POST' and 'continue' in request.POST:
-       return HttpResponse(template2.render({},request))
+       return redirect('../GroupDisplay')
 
 
-def GroupDisplay(request):
-    print("ID : ", request.POST['groupid'])
+def GroupDisplay(request): 
+    if request.method=='POST' and 'group_open_home' in request.POST:
+        groupid=request.POST['groupid']
+    else :
+        groupid=request.session['groupid']
+    # print("ID : ", request.session['groupid'])
     username = request.session['username']
-    groupid=request.POST['groupid']
-    request.session['groupid'] = groupid
     group=Groups.objects.get(id=groupid)
     template=loader.get_template('groupinfo.html')
     template1=loader.get_template('groupinfo.html')
@@ -248,7 +250,7 @@ def TaskDone(request):
 
 def LogOut(request):
     del request.session['username']
-    return redirect('../signInPage/')
+    return redirect('../login/')
 
 def GroupSessionEnd(request):
     del request.session['groupid']

@@ -11,4 +11,6 @@ urlpatterns = [
     path('AddGroup/',views.AddGroup, name='AddGroup'),
     path('GroupDetails/',views.GroupDetails, name='GroupDetails'),
     path('GroupDisplay/',views.GroupDisplay,name='GroupDisplay'),
+    path('UserAdd/',views.UserAdd,name='UserAdd'),
+    path('logout/',views.LogOut,name='LogOut'),
 ]
