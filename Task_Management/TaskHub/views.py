@@ -8,9 +8,6 @@ from .models import User,Groups,Tasks
 
 from django.contrib.auth.hashers import make_password, check_password
 
-# hashed_pwd = make_password("plain_text")
-# check_password("plain_text",hashed_pwd)
-
 
 def landing(request):
     template = loader.get_template('index.html')
@@ -26,15 +23,12 @@ def signUpPage(request):
 
 def home(request):
     template=loader.get_template('home.html')
-    # print(" ################################## home ##################################")
     client_username = request.session['username']
-    # print("Response : ", client_username)
     clients=User.objects.filter(username=client_username)
     groups=clients[0].groups.all()
     context={
         'user':clients[0],
         'groups':groups
-        # more to be added
     }
     return HttpResponse(template.render(context,request))
 
@@ -60,13 +54,6 @@ def clientLoggedIn(request):
         }
         return render(request,'message.html',context)
     template=loader.get_template('home.html')
-    # groups=user[0].groups.all()
-    # context={
-    #     'user':clients[0]
-    #     'groups':groups
-    #     # more to be added
-    # }
-    # print(" ################################## client Log In ##################################")
     request.session['username'] = client_username
     print("Session username 1 : ", request.session.get('username'))
     return redirect('../home/')
@@ -149,26 +136,24 @@ def UserAdd(request):
             return render(request,'message.html',context)
        group.members.add(member[0])
        group.save()
+       currentmembers=group.members.values().all()
        context={
-         'groupid': group.id,'username':username
+         'members': currentmembers
        }
        return HttpResponse(template1.render(context,request))
     if request.method=='POST' and 'continue' in request.POST:   
     #    group=Groups.objects.get(groupname=groupname)
-       context={
-          'groupid': groupid,'username':username
-       }
-       return HttpResponse(template2.render(context,request))
+    #    context={
+    #       'groupid': groupid,'username':username
+    #    }
+       return HttpResponse(template2.render({},request))
 
 
 def TaskAdd(request):
     username = request.session['username']
     groupid=request.session['groupid']
     template=loader.get_template('taskadd.html')
-    context={
-          'groupid': groupid,'username':username
-       }
-    return HttpResponse(template.render(context,request))
+    return HttpResponse(template.render({},request))
 
 
 def TaskAdded(request):
@@ -179,23 +164,19 @@ def TaskAdded(request):
     if request.method=='POST' and 'add' in request.POST:
        taskname=request.POST['taskname']
        taskdescription=request.POST['taskdescription']
+       points=request.POST['taskdescription']
        assignedto=request.POST['taskdescription']
        group=Groups.objects.get(id=groupid)
        group.tasknum=group.tasknum+1
-       task=Tasks(taskname=taskname, taskdescription=taskdescription,completionstatus=0, assignedto=assignedto )
+       group.percentage=((group.taskcompleted)*100)/(group.tasknum)
+       task=Tasks(taskname=taskname, taskdescription=taskdescription,completionstatus=0, assignedto=assignedto,points=points )
        task.save()
        group=Groups.objects.get(id=groupid)
        group.tasks.add(task)
        group.save()
-       context={
-         'groupid': group.id,'username':username
-       }
-       return HttpResponse(template1.render(context,request))
+       return HttpResponse(template1.render({},request))
     if request.method=='POST' and 'continue' in request.POST:
-       context={
-          'groupid': groupid,'username':username
-       }
-       return HttpResponse(template2.render(context,request))
+       return HttpResponse(template2.render({},request))
 
 
 def GroupDisplay(request):
@@ -254,7 +235,20 @@ def TaskDone(request):
     group=Groups.objects.get(id=groupid)
     task=Tasks.objects.get(taskid=taskid)
     task.completionstatus=1
-    Tasks.save()
+    task.save()
+    username=request.session['username'] 
+    user=User.objects.get(username)
+    user.score=user.score+task.points
+    user.save()
     group.taskcompleted=group.taskcompleted+1
+    group.percentage=((group.taskcompleted)*100)/(group.tasknum)
+    group.save()
     return redirect('/GroupDisplay')
 
+def LogOut(request):
+    del request.session['username']
+    return redirect('../signInPage/')
+
+def GroupSessionEnd(request):
+    del request.session['groupid']
+    return redirect('../home/')
