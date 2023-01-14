@@ -67,7 +67,7 @@ def clientRegistered(request):
     hashed_client_password=make_password(client_password)
     client_email=request.POST['email']
     client_confirm_password=request.POST['cpassword']
-
+    template=loader.get_template('home.html')
     for x in User.objects.all().values():
         if(x['username']==client_username):
             message="USERNAME TAKEN"
@@ -84,7 +84,10 @@ def clientRegistered(request):
         return render(request,'message.html',context)
     user=User(username=client_username,password=hashed_client_password,email=client_email,firstname= client_first_name,lastname=client_last_name,contact=client_contact)
     user.save()
-    return redirect('home')
+    context={
+        'username':client_username
+    }
+    return HttpResponse(template.render(context,request))
 
 def AddGroup(request):
     print(request.POST['username'])
@@ -92,55 +95,61 @@ def AddGroup(request):
     users=User.objects.filter(username=username).values()
     template=loader.get_template('groupdetails.html')
     context={
-        'user':users[0]
+        'username':username
         # more to be added
     }
     return HttpResponse(template.render(context,request))
 
 def GroupDetails(request):
     username=request.POST['username']
-    template1=loader.get_template('groupdetails.html')
-    # template2=loader.get_template('groupmainpage.html')
+    template1=loader.get_template('userdetailsadd.html')
     users=User.objects.filter(username=username).values()
-    # print('shinjan')
-    if request.method=='POST' and 'add_group' in request.POST:
-       groupname=request.POST['groupname']
-       groupdescription=request.POST['groupd']
-       context={
-         'user':users[0],
-         'groupname': groupname,
-         'groupdescription': groupdescription
-       }
-       group=Groups(groupname=groupname,owner=username,groupdescription=groupdescription)
-       group.save()
-       return HttpResponse(template1.render(context,request))
+    groupname=request.POST['groupname']
+    groupdescription=request.POST['groupd']
+    group=Groups(groupname=groupname,owner=username,groupdescription=groupdescription)
+    group.save()
+    group.members.add(users[0])
+    group.save()
+    context={
+        'username':username,
+        'groupid':group.id
+    }
+    return HttpResponse(template1.render(context,request))
+
+
+def UserAdd(request):
+    username=request.POST['username']
+    groupid=request.POST['groupid']
+    template1=loader.get_template('userdetailsadd.html')
+    template2=loader.get_template('groupmainpage.html')
+    print(groupid)
     if request.method=='POST' and 'add' in request.POST:
-       groupname=request.POST['groupname']
        membername=request.POST['membername']
+       group=Groups.objects.get(id=groupid)
        member=User.objects.filter(username=membername)
-       group=Groups.objects.filter(groupname=groupname)
+    #    group=Groups.objects.filter(groupname=groupname)
        if(len(member.values())==0):
             message="USERNAME DOES NOT EXIST"
             context={
-                "message":message
+                "message":message, 'group': group
             }
             return render(request,'message.html',context)
-       print(member[0])
-       group[0].members.add(member[0])
-       group[0].save()
-       user= User.objects.filter(username=username)
-       groups=user[0].groups.all()
-       print(groups.values())
-       return HttpResponse(template1.render({},request))
-    if request.method=='POST' and 'continue' in request.POST:   
-       groupname=request.POST['groupname']
-       group=Groups.objects.get(groupname=groupname)
+    #    print(member[0])
+       group.members.add(member[0])
+       group.save()
+    #    user= User.objects.filter(username=username)
+    #    groups=user[0].groups.all()
+    #    print(groups.values())
        context={
-          'group': group[0],'user':users[0]
+         'groupid': group.id,'username':username
+       }
+       return HttpResponse(template1.render(context,request))
+    if request.method=='POST' and 'continue' in request.POST:   
+    #    group=Groups.objects.get(groupname=groupname)
+       context={
+          'groupid': groupid,'username':username
        }
        return HttpResponse(template2.render(context,request))
-
-
 
 
 

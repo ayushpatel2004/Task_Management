@@ -8,4 +8,5 @@ urlpatterns = [
     path('clientRegistered/',views.clientRegistered, name='clientRegistered'),
     path('AddGroup/',views.AddGroup, name='AddGroup'),
     path('GroupDetails/',views.GroupDetails, name='GroupDetails'),
+    path('UserAdd/',views.UserAdd, name='UserAdd'),
 ]
