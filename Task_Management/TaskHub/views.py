@@ -110,7 +110,7 @@ def GroupDetails(request):
     group.members.add(users[0])
     group.save()
     request.session['groupid'] = group.id
-    print(request.session['groupid'])
+    # print(request.session['groupid'])
     # context={
     #     'username':username,
     #     'groupid':group.id

@@ -52,15 +52,18 @@
 	<div class="left">
 		<div class="overlay">
 		<h1>TaskHub</h1>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-		Curabitur et est sed felis aliquet sollicitudin</p>
+		<p>Is it difficult to keep a track of the progress of your team members in a group project? Well, not anymore.</p>
+        <p>Leave it to us. Collaborate and build :)</p>
+        {% for x in members %}
+        <p>{{x.username}}</p>
+        {% endfor %}
 		</div>
 	</div>
 	
 	<div class="right" id="login">
-		<h1>Create Group</h1>
-		<p>Enter group name and it's description.</p>
-		<form class="InputContainer" action ="../GroupDetails/" method="post">
+		<h1>Add user</h1>
+		<p>Add your teammates by their username.</p>
+		<form class="InputContainer" action ="../UserAdd/" method="post">
 			{% csrf_token %}
 		<div class="inputs">
             <input type="number" name="groupid" value= '{{ groupid}}' style="display:none;">
@@ -68,7 +71,7 @@
 			<input type="text" placeholder="Add user" name="membername">
 			<br>
             <button id="add" name="add" type="submit" style="margin: 20px; display:inline-block;">Add User</button>
-            <button id="continue" name="continue" type="submit" style="margin: 20px; display:inline-block;">Continue</button>
+            <button id="continue" name="continue" type="submit" style="margin: 20px; display:inline-block;">Finish</button>
 		</div>
 			<!-- <br><br>
 		<div class="remember-me--forget-password">
