@@ -115,7 +115,7 @@ def GroupDetails(request):
     context={
         'members': member
     }
-    return HttpResponse(template1.render({},request))
+    return HttpResponse(template1.render(context,request))
 
 
 def UserAdd(request):
@@ -187,7 +187,8 @@ def TaskAdded(request):
 
 
 def GroupDisplay(request): 
-    if request.method=='POST' and 'group_open_home' in request.POST:
+    # print(request.POST)
+    if request.method=='POST' and 'groupid' in request.POST:
         groupid=request.POST['groupid']
     else :
         groupid=request.session['groupid']
