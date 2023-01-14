@@ -26,9 +26,9 @@ def signUpPage(request):
 
 def home(request):
     template=loader.get_template('home.html')
-    print(" ################################## home ##################################")
+    # print(" ################################## home ##################################")
     client_username = request.session['username']
-    print("Response : ", client_username)
+    # print("Response : ", client_username)
     clients=User.objects.filter(username=client_username)
     groups=clients[0].groups.all()
     context={
@@ -66,7 +66,7 @@ def clientLoggedIn(request):
     #     'groups':groups
     #     # more to be added
     # }
-    print(" ################################## client Log In ##################################")
+    # print(" ################################## client Log In ##################################")
     request.session['username'] = client_username
     print("Session username 1 : ", request.session.get('username'))
     return redirect('../home/')
@@ -122,16 +122,17 @@ def GroupDetails(request):
     group.save()
     group.members.add(users[0])
     group.save()
-    context={
-        'username':username,
-        'groupid':group.id
-    }
-    return HttpResponse(template1.render(context,request))
+    request.session['groupid'] = group.id
+    # context={
+    #     'username':username,
+    #     'groupid':group.id
+    # }
+    return HttpResponse(template1.render({},request))
 
 
 def UserAdd(request):
     username=request.session['username']
-    groupid=request.POST['groupid']
+    groupid=request.session['groupid']
     template1=loader.get_template('userdetailsadd.html')
     template2=loader.get_template('groupmainpage.html')
     print(groupid)
@@ -161,8 +162,8 @@ def UserAdd(request):
 
 
 def TaskAdd(request):
-    username=request.POST['username']
-    groupid=request.POST['groupid']
+    username = request.session['username']
+    groupid=request.session['groupid']
     template=loader.get_template('taskadd.html')
     context={
           'groupid': groupid,'username':username
@@ -171,8 +172,8 @@ def TaskAdd(request):
 
 
 def TaskAdded(request):
-    username=request.POST['username']
-    groupid=request.POST['groupid']
+    username = request.session['username']
+    groupid=request.session['groupid']
     template1=loader.get_template('taskadd.html')
     template2=loader.get_template('groupmainpage.html')
     if request.method=='POST' and 'add' in request.POST:
@@ -198,8 +199,9 @@ def TaskAdded(request):
 
 
 def GroupDisplay(request):
-    username=request.POST['username']
+    username = request.session['username']
     groupid=request.POST['groupid']
+    request.session['groupid'] = groupid
     group=Groups.objects.get(id=groupid)
     template=loader.get_template('groupmainpage.html')
     template1=loader.get_template('groupmainpageowner.html')
@@ -248,7 +250,7 @@ def GroupDisplay(request):
 
 def TaskDone(request):
     taskid=request.POST['taskid']
-    groupid=request.POST['groupid'] 
+    groupid=request.session['groupid'] 
     group=Groups.objects.get(id=groupid)
     task=Tasks.objects.get(taskid=taskid)
     task.completionstatus=1
