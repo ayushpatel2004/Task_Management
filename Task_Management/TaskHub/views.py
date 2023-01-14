@@ -29,8 +29,8 @@ def signUpPage(request):
 #     clients=User.objects.filter(username=client_username).values()
 #     context={
 #         'user':clients[0]
-#         # more to be added
 #     }
+      
 #     return HttpResponse(template.render(context,request))
 
 def clientLoggedIn(request):
@@ -88,8 +88,10 @@ def clientRegistered(request):
         return render(request,'message.html',context)
     user=User(username=client_username,password=hashed_client_password,email=client_email,firstname= client_first_name,lastname=client_last_name,contact=client_contact)
     user.save()
+    group=user.groups.all().values()
     context={
-        'username':client_username
+        'username':client_username,
+        'groups': group
     }
     return HttpResponse(template.render(context,request))
 
@@ -138,12 +140,8 @@ def UserAdd(request):
                 "message":message, 'group': group
             }
             return render(request,'message.html',context)
-    #    print(member[0])
        group.members.add(member[0])
        group.save()
-    #    user= User.objects.filter(username=username)
-    #    groups=user[0].groups.all()
-    #    print(groups.values())
        context={
          'groupid': group.id,'username':username
        }
@@ -156,9 +154,99 @@ def UserAdd(request):
        return HttpResponse(template2.render(context,request))
 
 
+def TaskAdd(request):
+    username=request.POST['username']
+    groupid=request.POST['groupid']
+    template=loader.get_template('taskadd.html')
+    context={
+          'groupid': groupid,'username':username
+       }
+    return HttpResponse(template.render(context,request))
 
 
+def TaskAdded(request):
+    username=request.POST['username']
+    groupid=request.POST['groupid']
+    template1=loader.get_template('taskadd.html')
+    template2=loader.get_template('groupmainpage.html')
+    if request.method=='POST' and 'add' in request.POST:
+       taskname=request.POST['taskname']
+       taskdescription=request.POST['taskdescription']
+       assignedto=request.POST['taskdescription']
+       group=Groups.objects.get(id=groupid)
+       group.tasknum=group.tasknum+1
+       task=Tasks(taskname=taskname, taskdescription=taskdescription,completionstatus=0, assignedto=assignedto )
+       task.save()
+       group=Groups.objects.get(id=groupid)
+       group.tasks.add(task)
+       group.save()
+       context={
+         'groupid': group.id,'username':username
+       }
+       return HttpResponse(template1.render(context,request))
+    if request.method=='POST' and 'continue' in request.POST:
+       context={
+          'groupid': groupid,'username':username
+       }
+       return HttpResponse(template2.render(context,request))
 
 
+def GroupDisplay(request):
+    username=request.POST['username']
+    groupid=request.POST['groupid']
+    group=Groups.objects.get(id=groupid)
+    template=loader.get_template('groupmainpage.html')
+    template1=loader.get_template('groupmainpageowner.html')
+        
+    if(group.owner==username):
+        completed=group.tasks.objects.get(completionstatus=1)
+        pending=group.tasks.objects.get(completionstatus=0)
+        context={
+            'completed': completed ,
+            'pending' : pending ,
+            'groupid' : groupid
+        }
+        return HttpResponse(template1.render(context,request))
     
-    
+    else :
+        memberslist=group.members.exclude(username=group.owner)
+        memberslist.get(username=username).username="You"
+        if request.method=='POST' and 'teammate_tasks' in request.POST:
+            teammate=request.POST['teammate']
+            members=memberslist.exclude(username=teammate)
+            tasks=group.tasks.get(assignedto=teammate)
+            completed=tasks.filter(completionstatus=1).all()
+            pending=tasks.filter(completionstatus=0).all()
+            context={
+                'completed': completed ,
+                'pending' : pending ,
+                'members': members,
+                'currentuser':teammate,
+                'groupid' : groupid
+            }
+            return HttpResponse(template.render(context,request))
+
+        else :
+            members=memberslist.exclude(username=username)
+            tasks=group.tasks.get(assignedto=username)
+            completed=tasks.filter(completionstatus=1).all()
+            pending=tasks.filter(completionstatus=0).all()
+            context={
+                'completed': completed ,
+                'pending' : pending ,
+                'members': members,
+                'currentuser':username,
+                'groupid' : groupid
+            }
+            return HttpResponse(template.render(context,request))
+
+def TaskDone(request):
+    taskid=request.POST['taskid']
+    groupid=request.POST['groupid'] 
+    group=Groups.objects.get(id=groupid)
+    task=Tasks.objects.get(taskid=taskid)
+    task.completionstatus=1
+    Tasks.save()
+    group.taskcompleted=group.taskcompleted+1
+    return redirect('/GroupDisplay')
+
