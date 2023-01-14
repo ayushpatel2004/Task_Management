@@ -180,16 +180,17 @@ def TaskAdded(request):
 
 
 def GroupDisplay(request):
+    print("ID : ", request.POST['groupid'])
     username = request.session['username']
     groupid=request.POST['groupid']
     request.session['groupid'] = groupid
     group=Groups.objects.get(id=groupid)
-    template=loader.get_template('groupmainpage.html')
-    template1=loader.get_template('groupmainpageowner.html')
+    template=loader.get_template('groupinfo.html')
+    template1=loader.get_template('groupinfo.html')
         
     if(group.owner==username):
-        completed=group.tasks.objects.get(completionstatus=1)
-        pending=group.tasks.objects.get(completionstatus=0)
+        completed=group.tasks.filter(completionstatus=1)
+        pending=group.tasks.filter(completionstatus=0)
         context={
             'completed': completed ,
             'pending' : pending ,
