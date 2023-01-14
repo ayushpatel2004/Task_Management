@@ -167,6 +167,13 @@ def TaskAdded(request):
        points=request.POST['taskdescription']
        assignedto=request.POST['taskdescription']
        group=Groups.objects.get(id=groupid)
+       person=group.members.get(username=assignedto)
+       if(len(person)==0):
+        context={
+            'message':"USER DON'T EXIST IN THIS GROUP"
+        }
+        template=loader.get_template('message.html')
+        return HttpResponse(template.render({},request))
        group.tasknum=group.tasknum+1
        group.percentage=((group.taskcompleted)*100)/(group.tasknum)
        task=Tasks(taskname=taskname, taskdescription=taskdescription,completionstatus=0, assignedto=assignedto,points=points )
