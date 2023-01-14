@@ -98,14 +98,12 @@ def clientRegistered(request):
         return render(request,'message.html',context)
     user=User(username=client_username,password=hashed_client_password,email=client_email,firstname= client_first_name,lastname=client_last_name,contact=client_contact)
     user.save()
-    context={
-        'username':client_username
-    }
-    return HttpResponseRedirect(template.render(context,request))
+    request.session['username'] = client_username
+    return redirect('../home/')
 
 def AddGroup(request):
-    print(request.POST['username'])
-    username=request.POST['username']
+    # print(request.POST['username'])
+    username=request.session['username']
     users=User.objects.filter(username=username).values()
     template=loader.get_template('groupdetails.html')
     context={
@@ -115,7 +113,7 @@ def AddGroup(request):
     return HttpResponse(template.render(context,request))
 
 def GroupDetails(request):
-    username=request.POST['username']
+    username=request.session['username']
     template1=loader.get_template('userdetailsadd.html')
     users=User.objects.filter(username=username)
     groupname=request.POST['groupname']
@@ -132,7 +130,7 @@ def GroupDetails(request):
 
 
 def UserAdd(request):
-    username=request.POST['username']
+    username=request.session['username']
     groupid=request.POST['groupid']
     template1=loader.get_template('userdetailsadd.html')
     template2=loader.get_template('groupmainpage.html')
