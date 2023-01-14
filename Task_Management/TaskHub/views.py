@@ -24,14 +24,19 @@ def signUpPage(request):
     template=loader.get_template('signup.html')
     return HttpResponse(template.render({},request))
 
-# def home(request):
-#     template=loader.get_template('home.html')
-#     clients=User.objects.filter(username=client_username).values()
-#     context={
-#         'user':clients[0]
-#     }
-      
-#     return HttpResponse(template.render(context,request))
+def home(request):
+    template=loader.get_template('home.html')
+    print(" ################################## home ##################################")
+    client_username = request.session['username']
+    print("Response : ", client_username)
+    clients=User.objects.filter(username=client_username)
+    groups=clients[0].groups.all()
+    context={
+        'user':clients[0],
+        'groups':groups
+        # more to be added
+    }
+    return HttpResponse(template.render(context,request))
 
 def clientLoggedIn(request):
     client_username=request.POST['username']
@@ -55,11 +60,16 @@ def clientLoggedIn(request):
         }
         return render(request,'message.html',context)
     template=loader.get_template('home.html')
-    context={
-        'user':clients[0]
-        # more to be added
-    }
-    return HttpResponse(template.render(context,request))
+    # groups=user[0].groups.all()
+    # context={
+    #     'user':clients[0]
+    #     'groups':groups
+    #     # more to be added
+    # }
+    print(" ################################## client Log In ##################################")
+    request.session['username'] = client_username
+    print("Session username 1 : ", request.session.get('username'))
+    return redirect('../home/')
 
 
 def clientRegistered(request):
@@ -88,16 +98,12 @@ def clientRegistered(request):
         return render(request,'message.html',context)
     user=User(username=client_username,password=hashed_client_password,email=client_email,firstname= client_first_name,lastname=client_last_name,contact=client_contact)
     user.save()
-    group=user.groups.all().values()
-    context={
-        'username':client_username,
-        'groups': group
-    }
-    return HttpResponse(template.render(context,request))
+    request.session['username'] = client_username
+    return redirect('../home/')
 
 def AddGroup(request):
-    print(request.POST['username'])
-    username=request.POST['username']
+    # print(request.POST['username'])
+    username=request.session['username']
     users=User.objects.filter(username=username).values()
     template=loader.get_template('groupdetails.html')
     context={
@@ -107,9 +113,9 @@ def AddGroup(request):
     return HttpResponse(template.render(context,request))
 
 def GroupDetails(request):
-    username=request.POST['username']
+    username=request.session['username']
     template1=loader.get_template('userdetailsadd.html')
-    users=User.objects.filter(username=username).values()
+    users=User.objects.filter(username=username)
     groupname=request.POST['groupname']
     groupdescription=request.POST['groupd']
     group=Groups(groupname=groupname,owner=username,groupdescription=groupdescription)
@@ -124,7 +130,7 @@ def GroupDetails(request):
 
 
 def UserAdd(request):
-    username=request.POST['username']
+    username=request.session['username']
     groupid=request.POST['groupid']
     template1=loader.get_template('userdetailsadd.html')
     template2=loader.get_template('groupmainpage.html')

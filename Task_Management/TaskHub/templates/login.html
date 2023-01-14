@@ -27,7 +27,7 @@
 	<div class="right" id="login">
         
 		<h5>Login</h5>
-		<p>Don't have an account? <a href="signup" role="tab" data-toggle="tab">Create Your Account</a></p>
+		<p>Don't have an account? <a href="../signup" role="tab" data-toggle="tab">Create Your Account</a></p>
 		<form class="inputs" method="post" action="../clientLoggedIn/">
 			{% csrf_token %}
 			<input type="text" placeholder="Username" id="username" name="username" method="POST">
