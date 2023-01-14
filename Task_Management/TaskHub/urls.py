@@ -10,4 +10,5 @@ urlpatterns = [
     path('clientRegistered/',views.clientRegistered, name='clientRegistered'),
     path('AddGroup/',views.AddGroup, name='AddGroup'),
     path('GroupDetails/',views.GroupDetails, name='GroupDetails'),
+    path('GroupDisplay/',views.GroupDisplay,name='GroupDisplay'),
 ]
