@@ -12,8 +12,12 @@ from django.contrib.auth.hashers import make_password, check_password
 # check_password("plain_text",hashed_pwd)
 
 
-def signInPage(request):
+def landing(request):
     template = loader.get_template('index.html')
+    return HttpResponse(template.render({},request))
+
+def signInPage(request):
+    template = loader.get_template('login.html')
     return HttpResponse(template.render({},request))
 
 def signUpPage(request):
