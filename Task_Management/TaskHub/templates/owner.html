@@ -241,7 +241,7 @@
       <h3>Incomplete</h3>
       <ul id="incomplete-tasks">
         {% for x in pending %}
-        <li><label>{{x.taskname}}</label></li>
+        <li><label>{{x.taskname}} ->{{x.assignedto}}</label></li>
         {% endfor %}
     </ul>
       
@@ -253,7 +253,7 @@
       <h3>Complete</h3>
       <ul id="completed-tasks">
         {% for x in completed %}
-        <li><label>{{x.taskname}}</label></li>
+        <li><label>{{x.taskname}}-> {{x.assignedto}}</label></li>
         {% endfor %}
     </ul>
     </div>
