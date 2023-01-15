@@ -29,7 +29,7 @@
                     {% for x in groups %}
                     <form action="../GroupDisplay/" method="POST" name="group_open_home" id="group_open_home">
                         {%csrf_token%}
-                        <div class="card 1" onClick="javascript:this.parentNode.submit();">
+                        <div class="card 1" onClick="javascript:this.parentNode.submit();" name="group_open_home">
                             <div class="card_image"> 
                                 <img src="https://i.redd.it/b3esnz5ra34y.jpg"> 
                             </div>

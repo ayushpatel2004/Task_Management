@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskHub: Add Group</title>
+    <title>Document</title>
 </head>
 <body>
-    <h1>Group Details</h1>
-    <form action="../UserAdd/" method="POST">
+    <form action="../TaskAdded/" method="POST" name="add">
         {%csrf_token%}
-        <input type="text" name="username" value= '{{ username }}' style="display:none;">
-        <input type="number" name="groupid" value= '{{ groupid}}' style="display:none;">
-
-        <input type="text" placeholder="Add username" name="membername">
-        <br>
-        <button id="add" name="add" type="submit">Add User</button>
-        <button id="continue" name="continue" type="submit">Continue</button>
+        <input type="text" name="taskname" placeholder="Task Name">
+        <input type="text" name="taskdescription" placeholder="Task Description">
+        <input type="text" name="points" placeholder="Points">
+        <input type="text" name="assignedto" placeholder="Assign to">
+        <button type="submit">
+            Add Task
+        </button>
+    </form>
+    <form action="../TaskDone/" method="POST" name="continue">
+        {%csrf_token%}
+         <input type="text" name="taskname" placeholder="Task Name">
+        <button type="submit">
+            Finish
+        </button>
     </form>
 </body>
 </html> -->
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" >
@@ -55,25 +62,34 @@
 		<h1>TaskHub</h1>
 		<p>Is it difficult to keep a track of the progress of your team members in a group project? Well, not anymore.</p>
         <p>Leave it to us. Collaborate and build :)</p>
-        <h1>Your teammates</h1>
-        {% for x in members %}
-        <p>{{x.username}}</p>
-        {% endfor %}
 		</div>
 	</div>
 	
 	<div class="right" id="login">
-		<h1>Add user</h1>
-		<p>Add your teammates by their username.</p>
-		<form class="InputContainer" action ="../UserAdd/" method="post">
+		<h1>Create Task</h1>
+		<p>Enter task name, username and it's description.</p>
+		<form class="InputContainer" action ="../TaskAdded/" method="post" >
 			{% csrf_token %}
 		<div class="inputs">
-            <input type="number" name="groupid" value= '{{ groupid}}' style="display:none;">
-            <input type="text" name="username" value= '{{ username }}' style="display:none;">
-			<input type="text" placeholder="Add user" name="membername">
+			<input type="text" name="taskname" placeholder="Task Name">
 			<br>
-            <button id="add" name="add" type="submit" style="margin: 20px; display:inline-block;">Add User</button>
-            <button id="continue" name="continue" type="submit" style="margin: 20px; display:inline-block;">Finish</button>
+            <input type="text" name="taskdescription" placeholder="Task Description">
+			<br>
+            <input type="text" name="points" placeholder="Points">
+            <br>
+            <input type="text" name="assignedto" placeholder="Assign to">
+            <br>
+            <button type="submit" name="add_task" style="margin-top: 20px; margin-right: 20px;">
+                Add Task
+            </button>
+            <!-- <button id="add_group" name="add_group" type="submit" style="margin-top: 20px;">Create</button> -->
+            <form action="../TaskDone/" method="POST" >
+                {%csrf_token%}
+                 <!-- <input type="text" name="taskname" placeholder="Task Name"> -->
+                <button type="submit" name="continue">
+                    Finish
+                </button>
+            </form>
 		</div>
 			<!-- <br><br>
 		<div class="remember-me--forget-password">

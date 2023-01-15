@@ -161,47 +161,58 @@ def TaskAdded(request):
     groupid=request.session['groupid']
     template1=loader.get_template('taskadd.html')
     # template2=loader.get_template('groupmainpage.html')
-    if request.method=='POST' and 'add' in request.POST:
-       taskname=request.POST['taskname']
-       taskdescription=request.POST['taskdescription']
-       points=request.POST['taskdescription']
-       assignedto=request.POST['taskdescription']
-       group=Groups.objects.get(id=groupid)
-       person=group.members.get(username=assignedto)
-       if(len(person)==0):
-        context={
-            'message':"USER DON'T EXIST IN THIS GROUP"
-        }
-        template=loader.get_template('message.html')
-        return HttpResponse(template.render({},request))
-       group.tasknum=group.tasknum+1
-       group.percentage=((group.taskcompleted)*100)/(group.tasknum)
-       task=Tasks(taskname=taskname, taskdescription=taskdescription,completionstatus=0, assignedto=assignedto,points=points )
-       task.save()
-       group=Groups.objects.get(id=groupid)
-       group.tasks.add(task)
-       group.save()
-       return HttpResponse(template1.render({},request))
-    if request.method=='POST' and 'continue' in request.POST:
+    if request.method=='POST' and 'add_task' in request.POST:
+        taskname=request.POST['taskname']
+        taskdescription=request.POST['taskdescription']
+        points=request.POST['points']
+        assignedto=request.POST['assignedto']
+        group=Groups.objects.get(id=groupid)
+        person=group.members.filter(username=assignedto).all()
+        if(len(person)==0):
+            context={
+                'message':"USER DON'T EXIST IN THIS GROUP"
+            }
+            template=loader.get_template('message.html')
+            return HttpResponse(template.render(context,request))
+        group.tasknum=group.tasknum+1
+        print(group.tasknum)
+        group.percentage=((group.taskcompleted)*100)/(group.tasknum)
+        task=Tasks(taskname=taskname, taskdescription=taskdescription,completionstatus=0, assignedto=assignedto,points=points )
+        task.save()
+        # group=Groups.objects.get(id=groupid)
+        group.tasks.add(task)
+        group.save()
+        return HttpResponse(template1.render({},request))
+    if request.method=='POST' and 'continue' in request.POST:   
+    #    group=Groups.objects.get(groupname=groupname)
+    #    context={
+    #       'groupid': groupid,'username':username
+    #    }
        return redirect('../GroupDisplay')
+
+
+def TaskDone(request):
+    return redirect('../GroupDisplay')
 
 
 def GroupDisplay(request): 
     # print(request.POST)
-    if request.method=='POST' and 'groupid' in request.POST:
+    if request.method=='POST' and 'group_open_home' in request.POST:
         groupid=request.POST['groupid']
+        request.session['groupid'] = groupid
     else :
         groupid=request.session['groupid']
     # print("ID : ", request.session['groupid'])
     username = request.session['username']
     group=Groups.objects.get(id=groupid)
     template=loader.get_template('groupinfo.html')
-    template1=loader.get_template('groupinfo.html')
+    template1=loader.get_template('owner.html')
         
     if(group.owner==username):
         completed=group.tasks.filter(completionstatus=1)
         pending=group.tasks.filter(completionstatus=0)
         context={
+            'username':username,
             'completed': completed ,
             'pending' : pending ,
             'groupid' : groupid
@@ -210,48 +221,54 @@ def GroupDisplay(request):
     
     else :
         memberslist=group.members.exclude(username=group.owner)
-        memberslist.get(username=username).username="You"
+        # memberslist.get(username=username).username="You"
         if request.method=='POST' and 'teammate_tasks' in request.POST:
             teammate=request.POST['teammate']
             members=memberslist.exclude(username=teammate)
-            tasks=group.tasks.get(assignedto=teammate)
+            tasks=group.tasks.filter(assignedto=teammate)
             completed=tasks.filter(completionstatus=1).all()
             pending=tasks.filter(completionstatus=0).all()
             context={
+                'username':username,
                 'completed': completed ,
                 'pending' : pending ,
                 'members': members,
                 'currentuser':teammate,
-                'groupid' : groupid
+                'groupid' : groupid,
+                'owner':group.owner
             }
             return HttpResponse(template.render(context,request))
 
         else :
             members=memberslist.exclude(username=username)
-            tasks=group.tasks.get(assignedto=username)
+            tasks=group.tasks.filter(assignedto=username)
             completed=tasks.filter(completionstatus=1).all()
             pending=tasks.filter(completionstatus=0).all()
             context={
+                'username':username,
                 'completed': completed ,
                 'pending' : pending ,
                 'members': members,
                 'currentuser':username,
-                'groupid' : groupid
+                'groupid' : groupid,
+                'owner':group.owner
             }
             return HttpResponse(template.render(context,request))
 
-def TaskDone(request):
-    taskid=request.POST['taskid']
+def TaskCompleted(request):
+    taskid=request.POST['ctask']
+    # taskid=request.POST.getlist('ctask')
     groupid=request.session['groupid'] 
     group=Groups.objects.get(id=groupid)
-    task=Tasks.objects.get(taskid=taskid)
+    task=Tasks.objects.get(id=taskid)
     task.completionstatus=1
     task.save()
     username=request.session['username'] 
-    user=User.objects.get(username)
+    user=User.objects.get(username=username)
     user.score=user.score+task.points
     user.save()
     group.taskcompleted=group.taskcompleted+1
+    print(group.tasknum)
     group.percentage=((group.taskcompleted)*100)/(group.tasknum)
     group.save()
     return redirect('/GroupDisplay')

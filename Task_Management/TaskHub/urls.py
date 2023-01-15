@@ -13,4 +13,8 @@ urlpatterns = [
     path('GroupDisplay/',views.GroupDisplay,name='GroupDisplay'),
     path('UserAdd/',views.UserAdd,name='UserAdd'),
     path('logout/',views.LogOut,name='LogOut'),
+    path('TaskAdd/',views.TaskAdd,name='TaskAdd'),
+    path('TaskAdded/',views.TaskAdded,name='TaskAdded'),
+    path('TaskDone/',views.TaskDone,name='TaskDone'),
+    path('TaskCompleted/',views.TaskCompleted,name='TaskCompleted'),
 ]

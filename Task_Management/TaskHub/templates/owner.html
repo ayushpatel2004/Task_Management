@@ -1,39 +1,29 @@
-{% load static %}
+<!-- {% load static %}
 <!DOCTYPE html>
 
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'owner.css' %}">
-    
-    
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
-
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
-    
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.rtl.min.css" integrity="sha384-WJUUqfoMmnfkBLne5uxXj+na/c7sesSJ32gI7GfCk4zO4GthUKhSEGyvQ839BC51" crossorigin="anonymous">
 </head> 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-
-                <a class="navbar-brand" href="#">TaskHub</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="../home/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Logout</a>
-                    </li> 
-                    </ul>
-                </div>
-
-        </div>
-    </nav>
+    <div class="header">
+        <img src="https://cdn.jim-nielsen.com/ios/512/task-2013-06-27.png" class="logo">
+        <a href="" class="heading">TaskHub</a>
+        <nav>
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="">Products</a></li>
+                <li><a href="">Community</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="#"><button class="btn" id="btn1">Profile</button></a>
+        <a href="../logout"><button class="btn" id="btn2">Logout</button></a>
+    </div>
     <div class="student-profile py-4">
         <div class="container">
             <div class="row">
@@ -71,7 +61,64 @@
                     
                 </div>
             </div>
+            <button>Add Task</button>
         </div>
     </div>
+</body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'group.css' %}">
+    <title>TaskHub</title>
+</head>
+<body>
+    <div class="header">
+        <img src="https://cdn.jim-nielsen.com/ios/512/task-2013-06-27.png" class="logo">
+        <a href="" class="heading">TaskHub</a>
+        <nav>
+            <!-- <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="">Products</a></li>
+                <li><a href="">Community</a></li>
+                <li><a href="">Contact</a></li>
+            </ul> -->
+        </nav>
+        <a href="#"><button class="btn" id="btn1">Profile</button></a>
+        <a href="../logout"><button class="btn" id="btn2">Logout</button></a>
+    </div>
+    <div class="col-lg-8">
+        <div class="container1 ">
+            <h3>Todo</h3>
+            <ul id="incomplete-tasks">
+                {% for x in pending %}
+                <li><label>{{x.taskname}}</label></li>
+                {% endfor %}
+            </ul>
+    
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="container1 ">
+            <h3>Completed</h3>
+            <ul id="completed-tasks">
+                {% for x in completed %}
+                <li><input type="checkbox" checked><label>{{x.taskname}}</label></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <form action="../TaskAdd/" method="POST">
+        {%csrf_token%}
+        <!-- <input type="text" name="username" value= '{{ user.username }}' style="display:none;"> -->
+        <button type="submit">
+            Add Task
+        </button>
+    </form>
 </body>
 </html>

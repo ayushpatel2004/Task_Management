@@ -1,24 +1,87 @@
 body {
-    /* background: #67B26F;  fallback for old browsers */
-    /* background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F);  Chrome 10-25, Safari 5.1-6 */
-    /* background: linear-gradient(to right, #4ca2cd, #67B26F); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    padding: 0;
-    margin: 0;
-    font-family: 'Lato', sans-serif;
-    color: #000;
     background-image: linear-gradient(135deg, #FAB2FF 10%, #1904E5 100%);
-}
-.buttonx {
-    border: none;
-    color: rgb(3, 3, 3);
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: white;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Open Sans", sans-serif;
+    color: #333333;
   }
+
+  .header {
+    width: 100%;
+    height: 15vh;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+.logo {
+    width: 80px;
+    margin-top: 10px;
+    cursor: pointer;
+    margin: 15px;
+}
+nav {
+    flex: 1;
+    padding-left: 450px;
+}
+nav ul li {
+    display: inline-block;
+    list-style: none;
+    margin: 0 15px;
+}
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 600;
+}
+.heading{
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 600;
+}
+#btn1 {
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, #378de5 3%, #48789b 100%);
+    border-radius: 30px;
+    border: 1px solid #5e97d1;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 12px 20px;
+    margin: 10px;
+    text-decoration: none;
+    box-shadow: 1px 4px 12px rgba(94,28,68,.15);
+    text-shadow: 0px 1px 0px #528ecc;
+}
+#btn2 {
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, #cbcbcb 2%, #fff 100%);
+    border-radius: 30px;
+    border: 1px solid #cbcbcb;
+    cursor: pointer;
+    color: #5e97d1;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 12px 20px;
+    margin: 10px;
+    text-decoration: none;
+    box-shadow: 1px 4px 12px rgba(94,28,68,.15);
+    text-shadow: 0px 1px 0px #cbcbcb;
+}
+.btn:hover {
+    box-shadow: 3px 8px 22px rgba(94,28,68,.15);
+    transform: scale(1.1);
+    transition: .2s ease-in-out;
+}
 .student-profile .card {
     border-radius: 10px;
 }
