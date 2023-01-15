@@ -52,10 +52,9 @@
 <div class="box-form">
 	<div class="left">
 		<div class="overlay">
-		<h1>TaskHub</h1>
-		<p>Is it difficult to keep a track of the progress of your team members in a group project? Well, not anymore.</p>
-        <p>Leave it to us. Collaborate and build :)</p>
-        <h1>Your teammates</h1>
+		<h1>{{group.groupname}}</h1>
+		<p>{{group.groupdescription}}</p>
+        <h2>Your teammates</h2>
         {% for x in members %}
         <p>{{x.username}}</p>
         {% endfor %}

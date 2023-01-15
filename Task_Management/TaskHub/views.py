@@ -111,9 +111,11 @@ def GroupDetails(request):
     member=group.members.values().all()
     group.save()
     request.session['groupid'] = group.id
+    group=Groups.objects.get(id=group.id)
     # print(request.session['groupid'])
     context={
-        'members': member
+        'members': member,
+        'group':group
     }
     return HttpResponse(template1.render(context,request))
 
@@ -280,4 +282,3 @@ def LogOut(request):
 def GroupSessionEnd(request):
     del request.session['groupid']
     return redirect('../home/')
-
