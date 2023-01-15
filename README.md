@@ -1,4 +1,4 @@
-#TaskHub
+# TaskHub
 
 >Collaborate and build.
 
@@ -8,17 +8,17 @@ We have used HTML, CSS and JavaScript for the frontend. Django is used for the b
 
 The project is deployed on Replit.
 
-##Requirements
-+Python
-+Node.js
+## Requirements
++ Python
++ Node.js
 
-##Contributors
-+Akanksha Swati
-+Arya Deshmukh
-+Ayush Patel
-+Shinjan Chaturvedi
+## Contributors
++ Akanksha Swati
++ Arya Deshmukh
++ Ayush Patel
++ Shinjan Chaturvedi
 
-##Future Scope
-+The project can be further developed to enable features like deadline. 
-+The points system can be introduced which can be used to maintain streaks and identify dedicated employees.
-+Individual to-do list feature can also be implemented.
+## Future Scope
++ The project can be further developed to enable features like deadline. 
++ The points system can be introduced which can be used to maintain streaks and identify dedicated employees.
++ Individual to-do list feature can also be implemented.
