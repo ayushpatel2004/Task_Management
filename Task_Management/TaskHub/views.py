@@ -280,3 +280,4 @@ def LogOut(request):
 def GroupSessionEnd(request):
     del request.session['groupid']
     return redirect('../home/')
+
